@@ -1,39 +1,33 @@
 import numpy as np
-"""
-
-dS / dt = -beta * S * I / N
-dE / dt = +beta * S * I / N - sigma * E
-dI / dt = +sigma * E - gamma * I + c * R * I / N
-dR / dt = gamma * I - c * R * I / N
-
-
-
-yprime = [dS / dt  dE / dt dI / dt   dRdt]
-'
-
-input:
-  t current time
-  y vector of current soln values
-  y(1) = S, y(2) = E, y(3) = I, y(4) = R
-
-parameters in "params"
-  beta, N, sigma, gamma, c, R_zero_array(table of values)
-
-output: (col vector)
-  yprime(1) = dS / dt
-  yprime(2) = dE / dt
-  yprime(3) = dI / dt
-  yprime(4) = dR / dt
-
-"""
 
 
 def seir_function(t, y, params):
-    
+    """
+    dS / dt = -beta * S * I / N
+    dE / dt = +beta * S * I / N - sigma * E
+    dI / dt = +sigma * E - gamma * I + c * R * I / N
+    dR / dt = gamma * I - c * R * I / N
+
+    yprime = [dS / dt  dE / dt dI / dt   dRdt]
+
+    input:
+      t current time
+      y vector of current soln values
+      y(1) = S, y(2) = E, y(3) = I, y(4) = R
+
+    parameters in "params"
+      beta, N, sigma, gamma, c, R_zero_array(table of values)
+
+    output: (col vector)
+      yprime(1) = dS / dt
+      yprime(2) = dE / dt
+      yprime(3) = dI / dt
+      yprime(4) = dR / dt
+
+    """
     R_zero_array = params.r_zero
     
     min_t = np.min(R_zero_array[:, 0])
-    n_table = np.shape(R_zero_array)
     max_t = np.max(R_zero_array[:, 0])
     t_val = max(min_t, min(t, max_t))
     

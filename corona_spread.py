@@ -48,7 +48,6 @@ from calculations_module import seir_function
 import matplotlib.pyplot as plt
 
 
-
 S_0 = 11.0e+6  # Wuhan city  excluding initial infected, exposed population,
 
 I_0 = 40.0  # initial infected from market
@@ -60,10 +59,6 @@ E_0 = 20. * I_0  # initial exposed
 
 R_0 = 0  # initial recovered (not to be confused with R_zero, below)
 # initially, no one has recovered
-
-#
-#  params is a structure used to pass parameters.py to the
-#   ODE solver
 
 c = 0.0  # no mutation (yet)
 # maybe this happens later?
@@ -99,61 +94,23 @@ gamma = 1. / 18.  # https://www.imperial.ac.uk/mrc-global-infectious-disease-ana
 
 """
 r_zero_array = np.zeros([6, 2])
-r_zero_array[0, :] = [0.0,  3.0]
-r_zero_array[1, :] = [60.0,  2.6]
-r_zero_array[2, :] = [70.0,  1.9]
-r_zero_array[3, :] = [84.0,  1.0]
-r_zero_array[4, :] = [90.0,  .50]
-r_zero_array[5, :] = [1000, .50]
-# r_zero_array = [[0.0,  3.0],   # t=0 days    R_zero = 3.0
-#                 [60.0,  2.6],   # t = 60 days R_zero = 2.6
-#                 [70.0,  1.9],  # t = 70 days R_zero = 1.9
-#                 [84.0,  1.0],  # t = 84 days R_zero = 1.0
-#                 [90.0,  .50],  # t = 90 days R_zero = .50
-#                 [1000, .50]]  # t = 1000 days R_zero =.50
+r_zero_array[0, :] = [0.0,  3.0]# t=0 days    R_zero = 3.0
+r_zero_array[1, :] = [20.0,  2.6]# t = 60 days R_zero = 2.6
+r_zero_array[2, :] = [70.0,  1.9]# t = 70 days R_zero = 1.9
+r_zero_array[3, :] = [84.0,  1.0]# t = 84 days R_zero = 1.0
+r_zero_array[4, :] = [90.0,  .50]# t = 90 days R_zero = .50
+r_zero_array[5, :] = [1000, .50]# t = 1000 days R_zero =.50
 
 params = parameters.Params(c, N, sigma, gamma, r_zero_array)
 
-#
-#
-#  time units = days
-
-#
-#
-
-#     [start_time  end_time] (days)
-#
 t_0 = 0
 tspan = np.linspace(t_0, 181, 180)  # time in days
-
-#
-
-#    y(1) = S
-#    y(2) = E
-#    y(3) = I
-#    y(4) = R
-
 
 y_init = np.zeros(4)
 y_init[0] = S_0
 y_init[1] = E_0
 y_init[2] = I_0
 y_init[3] = R_0
-
-tol = 1.e-6  # ode solver tolerance
-
-# # set 'Stats','on' to get more info
-#
-# options = odeset('AbsTol', tol, 'RelTol', tol, 'MaxOrder', 5, 'Stats', 'on')
-#
-# #
-# #    note: set Refine switch to avoid interpolation
-# #
-# # options = odeset('AbsTol', tol,'RelTol',tol,'MaxOrder',5,'Stats','on','Refine',1)
-#
-# runtime = cputime
-#
-# #    non-stiff solver, matlab and Octave
 
 
 def seir_with_params(t, y):
@@ -168,17 +125,6 @@ for i in range(1, 180):
     y[i, :] = r.integrate(tspan[i])
     if not r.successful():
         raise RuntimeError("Could not integrate")
-
-# plt.plot(tspan, y[:, 1:])
-# plt.show()
-#
-#
-# # plt.plot([1,2,3])
-#
-# plt.subplot(2,1,1)
-# plt.plot(tspan, y[:,0],'b-')
-# xlabel('time(days)');
-# ylabel('S: susceptible')
 
 
 fig, axes = plt.subplots(ncols=2)
@@ -211,78 +157,23 @@ axes[0].set(xlabel="time (days)", ylabel="E+I+R: Total cases")
 axes[1].set(xlabel="time (days)", ylabel="E+I: Active cases")
 plt.show()
 
-help = 9
-#
-# [t, y] = ode45( @ (t, y) seir(t, y, params), tspan, y_init, options)
-#
-# #
-# #     stiff solver, matlab only
-# # [t,y] = ode15s( @(t, y) seir(t,y, params), tspan, yinit, options)
-# #
-#
-# runtime = cputime - runtime
-#
-# nsteps = length(t)
-#
-# # disp(sprintf('number of steps:\t#15.5f',nsteps))
-#
-# figure
-#
-# subplot(2, 1, 1), plot(t, y(:, 1), 'b-')
-# xlabel('time(days)')
-# ylabel('S: susceptible')
-#
-# subplot(2, 1, 2), plot(t, y(:, 2), 'b-')
-# xlabel('time(days)')
-# ylabel('E: exposed')
-#
-# figure
-#
-# subplot(2, 1, 1), plot(t, y(:, 3), 'b-')
-# xlabel('time(days)')
-# ylabel('I: infectious')
-#
-# subplot(2, 1, 2), plot(t, y(:, 4), 'b-')
-# xlabel('time(days)')
-# ylabel('R: recovered')
-#
-# total_cases(:, 1) = y(:, 2) + y(:, 3) + y(:, 4)
-#
-# figure
-#
-# plot(t, total_cases(:, 1), 'b-')
-# xlabel('time(days)')
-# ylabel('Total Cases: E+I+R ')
-#
-# figure
-# total_cases_active(:, 1) = y(:, 2) + y(:, 3)
-# plot(t, total_cases_active(:, 1), 'b-')
-# xlabel('time(days)')
-# ylabel('Total Active Cases: E+I ')
-#
-# S_end = y(nsteps, 1)
-# E_end = y(nsteps, 2)
-# I_end = y(nsteps, 3)
-# R_end = y(nsteps, 4)
-#
-# total = S_end + E_end + I_end + R_end
-#
-# disp(sprintf('CPU time(sec):\t#15.5f', runtime))
-#
-# disp(sprintf('\n time (days): \t#10.2f \n', t(nsteps)))
-#
-# disp(sprintf('total population:\t#10.2f', total))
-#
-# disp(sprintf('initial infected:\t#10.2f', I_0))
-#
-# disp(sprintf('\n total cases (E+I+R) at t= #10.2f: #10.2f \n', ...
-# t(nsteps), E_end + I_end + R_end ))
-#
-#
-# disp(sprintf('\n Recovered at t= #-10.2f: #10.2f \n', t(nsteps), R_end))
-# disp(sprintf('\n Infected (infectious) at t= #-10.2f: #10.2f \n', t(nsteps), I_end))
-# disp(sprintf('\n Exposed (non-infectious) at t= #-10.2f: #10.2f \n', t(nsteps), E_end))
-# disp(sprintf('\n Susceptable at t= #-10.2f: #10.2f \n', t(nsteps), S_end))
-#
-#
-#
+nsteps = np.size(tspan)
+S_end = y[nsteps - 1, 0]
+E_end = y[nsteps - 1, 1]
+I_end = y[nsteps - 1, 2]
+R_end = y[nsteps - 1, 3]
+
+total = S_end + E_end + I_end + R_end
+
+print('\n time (days): ', tspan[nsteps-1], '\n')
+
+print('total population: ', total)
+
+print('initial infected: ', I_0)
+
+print('\n total cases (E+I+R) at t= ', tspan[nsteps-1], ' \n', E_end + I_end + R_end)
+
+print('\n Recovered at t= ', tspan[nsteps-1], ': ', R_end, ' \n')
+print('\n Infected (infectious) at t= ', tspan[nsteps-1], ': ', I_end, ' \n')
+print('\n Exposed (non-infectious) at t= ', tspan[nsteps-1], ': ', E_end, ' \n')
+print('\n Susceptable at t= ', tspan[nsteps-1], ': ', S_end)
