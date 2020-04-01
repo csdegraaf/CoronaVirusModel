@@ -14,7 +14,7 @@ note: added cRI/N term:  disease mutates and can cause reinfection or immunity l
 jumps to Infected population. It can also be that a mutated form jumps to the Exposed population. For now, we assume 
 c=0 (no mutation has been observed).
   
-dS/dt = -beta*S*I/N
-dE/dt = +beta*S*I/N - sigma*E
-dI/dt = +sigma*E -gamma*I + c*R*I/N
-dR/dt = gamma*I -c*R*I/N
+* dS/dt = -beta* S * I/N
+* dE/dt = +beta* S* I/N - sigma* E
+* dI/dt = +sigma* E -gamma* I + c* R* I/N
+* dR/dt = gamma* I -c* R* I/N
