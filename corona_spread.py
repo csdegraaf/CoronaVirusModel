@@ -1,7 +1,6 @@
 """
-This code is can be run using
-Matlab (commercial package)
-Octave (open source version)
+This code is a python version of the oringal Matlab/Octave code from Peter Forsyth
+(see: https://cs.uwaterloo.ca/~paforsyt/SEIR.html)
 
 parameters.py for SEIR model
 
@@ -23,17 +22,14 @@ dE/dt = +beta*S*I/N - sigma*E
 dI/dt = +sigma*E -gamma*I + c*R*I/N
 dR/dt = gamma*I -c*R*I/N
 
-this file passes "seir.m" function to ode solver
-ode systen is specified in "seir.m" file
-
-
+this file passes seir_function in the calculations module to the ode solver
+ode systen is specified in the calculations module
 
 Parameters from:
 
 Wang, H., Wang, Z., Dong, Y. et al. Phase-adjusted estimation of
 the number of Coronavirus Disease 2019 cases in Wuhan, China.
 Cell Discov 6, 10 (2020). https://doi.org/10.1038/s41421-020-0148-0
-
 
 Wuhan, Feb 2020
 Based on estimates for original outbreak in Wuhan
