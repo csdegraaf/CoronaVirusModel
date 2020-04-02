@@ -131,6 +131,7 @@ axes[1].set(xlabel="time (days)", ylabel="E: exposed")
 
 axes[0].legend()
 axes[1].legend()
+plt.savefig('output/susceptible.png')
 plt.show()
 
 fig, axes = plt.subplots(ncols=2)
@@ -138,19 +139,20 @@ axes[0].plot(tspan, y[:, 2], color="b", label="I: infectious")
 axes[1].plot(tspan, y[:, 3], color="r", label="R: recovered")
 axes[0].set(xlabel="time (days)", ylabel="I: infectious")
 axes[1].set(xlabel="time (days)", ylabel="R: recovered")
-
 axes[0].legend()
 axes[1].legend()
+plt.savefig('output/infectious.png')
 plt.show()
 
 total_cases = y[:, 1] + y[:, 2] + y[:, 3]
 total_cases_active = y[:, 1] + y[:, 2]
 
-fig, axes = plt.subplots(ncols=2)
-axes[0].plot(tspan, total_cases, color="b", label="E+I+R: Total cases")
-axes[1].plot(tspan, total_cases_active, color="r", label="E+I: Total cases")
-axes[0].set(xlabel="time (days)", ylabel="E+I+R: Total cases")
-axes[1].set(xlabel="time (days)", ylabel="E+I: Active cases")
+fig, ax = plt.subplots()
+ax.plot(tspan, total_cases, color="b", label="E+I+R: Total cases")
+ax.plot(tspan, total_cases_active, color="r", label="E+I: Active cases")
+ax.set(xlabel="time (days)", ylabel="Patients", title='Cumulative and active cases')
+plt.legend()
+plt.savefig('output/total_cases.png')
 plt.show()
 
 nsteps = np.size(tspan)
@@ -161,15 +163,15 @@ R_end = y[nsteps - 1, 3]
 
 total = S_end + E_end + I_end + R_end
 
-print('\n time (days): ', tspan[nsteps-1], '\n')
+print('time (days): % 2d' %tspan[nsteps-1])
 
-print('total population: ', total)
+print('total population: % 2d' %total)
 
-print('initial infected: ', I_0)
+print('initial infected: % 2d' %I_0)
 
-print('\n total cases (E+I+R) at t= ', tspan[nsteps-1], ' \n', E_end + I_end + R_end)
+print('total cases (E+I+R) at t= % 2d : % 2d' %(tspan[nsteps-1], E_end + I_end + R_end))
 
-print('\n Recovered at t= ', tspan[nsteps-1], ': ', R_end, ' \n')
-print('\n Infected (infectious) at t= ', tspan[nsteps-1], ': ', I_end, ' \n')
-print('\n Exposed (non-infectious) at t= ', tspan[nsteps-1], ': ', E_end, ' \n')
-print('\n Susceptable at t= ', tspan[nsteps-1], ': ', S_end)
+print('Recovered at t=  % 2d : % 2d \n' %(tspan[nsteps-1], R_end))
+print('Infected (infectious) at t= % 2d : % 2d \n' %(tspan[nsteps-1],I_end))
+print('Exposed (non-infectious) at t= % 2d : % 2d \n ' %(tspan[nsteps-1], E_end))
+print('Susceptable at t= % 2d : % 2d \n ' %(tspan[nsteps-1], S_end))

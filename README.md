@@ -18,3 +18,5 @@ dS/dt = -beta*S*I/N
 dE/dt = +beta*S*I/N - sigma*E
 dI/dt = +sigma*E -gamma*I + c*R*I/N
 dR/dt = gamma*I -c*R*I/N
+
+![example output](output/total_cases.png)
